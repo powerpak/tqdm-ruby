@@ -5,7 +5,6 @@ require 'tqdm'
 #
 # @see http://ruby-doc.org/core-2.2.3/Enumerable.html
 module Enumerable
-
   # Returns a clone of `self` where all calls to `#each` and related methods will print an animated progress bar
   # while iterating.
   #
@@ -18,8 +17,7 @@ module Enumerable
   # @option opts [Float] :min_interval If less than min_interval seconds or min_iters iterations have passed since
   #              the last progress meter update, it is not updated again.
   # @return [Enumerable] `self` with the `#each` method wrapped as described above
-  def tqdm(opts = {})
+  def with_progress(opts = {})
     Tqdm::Decorator.new(self, opts).enhance
   end
-
 end

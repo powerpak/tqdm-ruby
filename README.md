@@ -39,13 +39,13 @@ And then execute:
 
 ## Usage
 
-All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives, e.g., `#each_with_index`, `#each_with_object`, etc.) produces an animated progress bar on `$stderr`.
+All `Enumerable` objects gain access to the `#with_progress` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives, e.g., `#each_with_index`, `#each_with_object`, etc.) produces an animated progress bar on `$stderr`.
 
-Options can be provided for `#tqdm`:
+Options can be provided for `#with_progress`:
 
 ```ruby
 require 'tqdm'
-Hash[*(1..1000)].tqdm(desc: "working on it", leave: true).each { |x| sleep 0.01 }
+Hash[*(1..1000)].with_progress(desc: "working on it", leave: true).each { |x| sleep 0.01 }
 ```
 
 The following options are available:
@@ -70,10 +70,10 @@ DB.create_table :items do
 end
 
 # Show progress during big inserts (this isn't new)
-(0..100000).tqdm.each { DB[:items].insert(price: rand * 100) }
+(0..100000).with_progress.each { DB[:items].insert(price: rand * 100) }
 
 # Show progress during long SELECT queries
-DB[:items].where{ price > 10 }.tqdm.each { |row| "do some processing here" }
+DB[:items].where{ price > 10 }.with_progress.each { |row| "do some processing here" }
 ```
 
 ## Contributing

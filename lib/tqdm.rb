@@ -17,8 +17,8 @@ module Tqdm
   N_BARS = 10
 
   class << self
-    # Upgrades `Sequel::Datasets` with the #tqdm method.
-    # @see Enumerable#tqdm
+    # Upgrades `Sequel::Datasets` with the #with_progress method.
+    # @see Enumerable#with_progress
     def enhance_sequel!
       require 'tqdm/sequel'
     end
