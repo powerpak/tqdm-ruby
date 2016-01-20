@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["theodore.r.pak@gmail.com"]
   spec.description   = %q{Enhances Enumerables to show progress while iterating. (Port of tqdm for Python.)}
   spec.summary       = %q{Enhances Enumerables to show progress while iterating.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/powerpak/tqdm-ruby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

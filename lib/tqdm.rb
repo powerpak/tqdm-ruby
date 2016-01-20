@@ -3,6 +3,12 @@ require "tqdm/utils"
 require "core_ext/enumerable"
 
 module Tqdm
+  
+  class << self
+    def enhance_sequel
+      require_relative "tqdm/sequel"
+    end
+  end
     
   class StatusPrinter
     def initialize(file)
@@ -58,10 +64,10 @@ module Tqdm
     def finish!
       if !@leave
         @sp.print_status('')
-        $stdout.write("\r")
+        @file.write("\r")
       else
         if @last_print_n < @n
-          @sp.print_status(@prefix + format_meter(@n, @total, Time.now - start_t))
+          @sp.print_status(@prefix + format_meter(@n, @total, Time.now - @start_t))
         end
         @file.write("\n")
       end
