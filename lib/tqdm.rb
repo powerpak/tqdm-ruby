@@ -150,6 +150,9 @@ module Tqdm
       enumerable ||= @enumerable.clone
       # Because this utilizes &block it currently incurs a pretty significant performance penalty.
       # http://mudge.name/2011/01/26/passing-blocks-in-ruby-without-block.html
+      #
+      # It would be much cheaper to somehow use def and yield, although we have to do that while
+      # somehow getting `tqdm` into scope.
       enumerable.define_singleton_method(:each) do |*args, &block|
         tqdm.start!
         super(*args) do |item|
