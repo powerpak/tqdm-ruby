@@ -1,4 +1,5 @@
 # tqdm-ruby
+[![Gem Version](https://badge.fury.io/rb/tqdm.svg)](https://badge.fury.io/rb/tqdm)
 
 tqdm-ruby is a small utility to show a progress indicator while iterating through an Enumerable object.
 
