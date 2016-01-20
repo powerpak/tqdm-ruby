@@ -1,5 +1,4 @@
-require 'tqdm/utils'
-require 'tqdm/status_printer'
+require 'tqdm/printer'
 
 module Tqdm
 
@@ -14,7 +13,7 @@ module Tqdm
   #   arr_tqdm.each { |x| sleep 0.01 }
   class Decorator
 
-    include Utils
+    attr_reader :printer, :enumerable, :iteration, :start_time
 
     # Initialize a new Decorator. Typically you wouldn't use this object, but
     # would immediately call `#enhance` to retrieve the enhanced `Enumerable`.
@@ -36,24 +35,20 @@ module Tqdm
     # @example
     #   a = [1, 2, 3, 4]
     #   Decorator.new(a, file: $stdout, leave: true)
-    def initialize(enumerable, opts={})
+    def initialize(enumerable, options={})
       @enumerable = enumerable
-      @total = opts[:total] || @enumerable.size rescue @enumerable.count rescue nil
-      @prefix = opts[:desc] ? opts[:desc] + ': ' : ''
-      @file = opts[:file] || $stderr
-      @sp = StatusPrinter.new(@file)
-      @min_iters = opts[:min_iters] || 1
-      @min_interval = opts[:min_interval] || 0.5
-      @leave = opts[:leave] || false
+      options = default_options.merge(options)
+      @printer = Printer.new(options: options)
+      @min_iterations = options[:min_iters] || 1
+      @min_interval = options[:min_interval] || 0.5
+      @leave = options[:leave] || false
     end
 
     # Starts the textual progress bar.
     def start!
-      @start_t = @last_print_t = Time.now
-      @last_print_n = 0
-      @n = 0
-
-      @sp.print_status(@prefix + format_meter(0, @total, 0))
+      @iteration = 0
+      @start_time = Time.now
+      printer.start
     end
 
     # Called everytime the textual progress bar might need to be updated (i.e. on
@@ -63,53 +58,87 @@ module Tqdm
     #
     # @see #initialize
     def increment!
-      @n += 1
+      @iteration += 1
 
-      if @n - @last_print_n >= @min_iters
-        # We check the counter first, to reduce the overhead of Time.now
-        cur_t = Time.now
-        if cur_t - @last_print_t >= @min_interval
-          @sp.print_status(@prefix + format_meter(@n, @total, cur_t - @start_t))
-          @last_print_n = @n
-          @last_print_t = cur_t
-        end
-      end
+      return unless (iteration - last_printed_iteration) >= @min_iterations
+      # # We check the counter first, to reduce the overhead of Time.now
+      return unless (current_time! - last_print_time) >= @min_interval
+
+      printer.status(iteration: iteration, elapsed_time: elapsed_time!)
+      @last_printed_iteration = iteration
+      last_print_time = current_time
     end
 
     # Prints the final state of the textual progress bar. Based on the `:leave` option, this
     # may include deleting it entirely.
     def finish!
-      if !@leave
-        @sp.print_status('')
-        @file.write("\r")
-      else
-        if @last_print_n < @n
-          @sp.print_status(@prefix + format_meter(@n, @total, Time.now - @start_t))
-        end
-        @file.write("\n")
-      end
+      return printer.null_finish unless @leave
+
+      printer.finish(elapsed_time: elapsed_time!, reprint: reprint?)
     end
 
     # Enhances the wrapped `Enumerable`.
     #
-    # @note The `Enumerable` is cloned (shallow copied) before it is enhanced; it is not modified directly.
+    # iterationote The `Enumerable` is cloned (shallow copied) before it is enhanced; it is not modified directly.
     #
     # @return [Enumerable] a clone of Enumerable enhanced so that every call to `#each` animates the
     #   progress bar.
     def enhance
-      tqdm = self
+      decorate_enumerable_each
+      enhanced
+    end
 
-      enhanced = @enumerable.clone
+    private
+
+    def decorate_enumerable_each
+      tqdm = self
       enhanced.define_singleton_method(:each) do |*args, &block|
         tqdm.start!
-        super(*args) do |item|
+        result = super(*args) do |item|
           block.call item
           tqdm.increment!
         end
         tqdm.finish!
+        result
       end
+    end
 
-      enhanced
+    def enhanced
+      @enhanced ||= enumerable.clone
+    end
+
+    def total!
+      enumerable.size
+    rescue enumerable.count
+    rescue nil
+    end
+
+    def last_printed_iteration
+      @last_printed_iteration ||= iteration
+    end
+
+    def last_print_time
+      @last_print_time ||= start_time
+    end
+
+    def current_time
+      @current_time ||= current_time!
+    end
+
+    def current_time!
+      @current_time = Time.now
+    end
+
+    def elapsed_time!
+      current_time! - start_time
+    end
+
+    def reprint?
+      last_printed_iteration < iteration
+    end
+
+    def default_options
+      {total: total!}
     end
   end
 end
