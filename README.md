@@ -43,7 +43,7 @@ Options can be provided for `#tqdm`:
 
 ```ruby
 require 'tqdm'
-(0...1000).tqdm(desc: "demo", leave: true).each { |x| sleep 0.01 }
+Hash[*(1..1000)].tqdm(desc: "working on it", leave: true).each { |x| sleep 0.01 }
 ```
 
 The following options are available:
