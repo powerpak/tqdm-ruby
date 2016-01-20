@@ -3,7 +3,7 @@
 
 tqdm-ruby is a small utility to show a progress indicator while iterating through an Enumerable object.
 
-It is a port of the excellent [tdqm library][tqdm] for python.
+It is a port of the excellent [tdqm library][tqdm] for python. tqdm (read taqadum, تقدّم) means "progress" in Arabic.
 
 Call `#tqdm` on any `Enumerable`, which enhances the object so that iterating over it will produce an animated progress bar on `$stderr`.
 
