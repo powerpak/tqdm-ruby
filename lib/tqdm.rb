@@ -68,7 +68,7 @@ module Tqdm
     # @param enumerable [Enumerable] the Enumerable object to be enhanced
     # @param opts [Hash] more options used to control behavior of the progress bar
     # @option opts [String] :desc a short description added to the beginning of the progress bar
-    # @option opts [Integer] :total (self.size) the expected number of iterations
+    # @option opts [Integer] :total (enumerable.size || enumerable.count) the expected number of iterations
     # @option opts [File, IO] :file ($stderr) a file-like object to output the progress bar to
     # @option opts [Boolean] :leave (false) should the progress bar should stay on screen after it's done?
     # @option opts [Integer] :min_iters see `:min_interval`
@@ -136,26 +136,42 @@ module Tqdm
       end
     end
     
-    # Enhances the wrapped `Enumerable`.
+    # Enhances the wrapped `Enumerable`, or the object provided as the sole argument, 
+    # with an `#each` singleton method that animates the progress bar.
     #
-    # @note The `Enumerable` is cloned (shallow copied) before it is enhanced; it is not modified directly.
+    # @note When called without an argument, the wrapped `Enumerable` is **cloned** (shallow copied) 
+    # before it is enhanced; it is not modified directly.
     #
-    # @return [Enumerable] a clone of Enumerable enhanced so that every call to `#each` animates the
-    #   progress bar.
-    def enhance
+    # @param enumerable [Enumerable] the object to enhance with the new `#each` singleton method
+    # @return [Enumerable] the enhanced object
+    def enhance(enumerable = nil)
       tqdm = self
       
-      enhanced = @enumerable.clone
-      enhanced.define_singleton_method(:each) do |*args, &block|
+      enumerable ||= @enumerable.clone
+      # Because this utilizes &block it currently incurs a pretty significant performance penalty.
+      # http://mudge.name/2011/01/26/passing-blocks-in-ruby-without-block.html
+      enumerable.define_singleton_method(:each) do |*args, &block|
         tqdm.start!
         super(*args) do |item|
-          block.call item
+          block.call(item) if block
           tqdm.increment!
         end
         tqdm.finish!
       end
       
-      enhanced
+      enumerable
+    end
+    
+    # Enhances the wrapped `Enumerable` directly with an `#each` singleton method that animates 
+    # the progress bar.
+    #
+    # @note **Warning:** The `Enumerable` is **not** cloned before it is enhanced with this method.
+    # Because this modifies the callee directly, it is harder to reason about downstream effects.
+    # However, in theory,
+    #
+    # @return [Enumerable] the enhanced object
+    def enhance!
+      enhance(@enumerable)
     end
 
   end

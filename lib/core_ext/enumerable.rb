@@ -6,7 +6,7 @@ require "tqdm"
 # @see http://ruby-doc.org/core-2.2.3/Enumerable.html
 module Enumerable
   
-  # Returns a clone of `self` where all calls to `#each` and related methods will print an animated progress bar 
+  # Returns a *clone* of `self` where all calls to `#each` and related methods will print an animated progress bar 
   # while iterating.
   #
   # @param opts [Hash] more options used to control behavior of the progress bar
@@ -20,6 +20,17 @@ module Enumerable
   # @return [Enumerable] `self` with the `#each` method wrapped as described above
   def tqdm(opts = {})
     Tqdm::TqdmDecorator.new(self, opts).enhance
+  end
+  
+  # Returns `self` where all calls to `#each` and related methods will print an animated progress bar 
+  # while iterating. `opts` are the same as `Enumerable#tqdm`.
+  #
+  # **Warning:** because this modifies the callee directly, it's harder to predict downstream effects.
+  # I'm not sure yet if this is a good idea.
+  #
+  # @see Enumerable#tqdm
+  def tqdm!(opts = {})
+    Tqdm::TqdmDecorator.new(self, opts).enhance!
   end
   
 end

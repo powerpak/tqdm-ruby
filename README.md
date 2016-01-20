@@ -39,22 +39,23 @@ And then execute:
 
 ## Usage
 
-All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives, e.g., `#each_with_index`, `#each_with_object`, etc.) produces an animated progress bar on `$stderr`.
-
-Options can be provided for `#tqdm`:
+All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives: `#each_with_index`, `#map`, `#select`, etc.) produces an animated progress bar on `$stderr`.
 
 ```ruby
 require 'tqdm'
-Hash[*(1..1000)].tqdm(desc: "working on it", leave: true).each { |x| sleep 0.01 }
+num = 1629241972611353
+(2..Math.sqrt(num)).tqdm.reject { |x| num % x > 0 }.map { |x| [x, num/x] }
+# ... Animates a progress bar while calculating...
+# => [[32599913, 49976881]]
 ```
 
-The following options are available:
+Options can be provided as a hash, e.g., `.tqdm(desc: "copying", leave: true)`. The following options are available:
 
 - `desc`: Short string, describing the progress, added to the beginning of the line
-- `total`: Expected number of iterations, if not given, `self.size` is used
+- `total`: Expected number of iterations, if not given, `self.size || self.count` is used
 - `file`: A file-like object to output the progress message to, by default, `$stderr`
-- `leave`: A boolean (default false). Should the progress bar should stay on screen after it's done?
-- `min_interval`: Default is `0.5`. If less than `min_interval` seconds or `min_iters` iterations have passed since the last progress meter update, it is not re-printed (decreases IO thrashing).
+- `leave`: A boolean (default `false`). Should the progress bar should stay on screen after it's done?
+- `min_interval`: Default is `0.5`. If less than `min_interval` seconds or `min_iters` iterations have passed since the last progress meter update, it is not re-printed (decreasing IO thrashing).
 - `min_iters`: Default is `1`. See previous.
 
 [Sequel](http://sequel.jeremyevans.net/) is an amazing database library for Ruby. tqdm can enhance its [`Dataset`](http://sequel.jeremyevans.net/rdoc/classes/Sequel/Dataset.html) objects to show progress while iterating (same options as above):
