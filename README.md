@@ -13,7 +13,7 @@ The default output looks like this:
 
     |####------| 492/1000  49% [elapsed: 00:05 left: 00:05, 88.81 iters/sec]
 
-It works equally well from within irb, [pry](http://pryrepl.org/) and [Jupyter notebooks](https://jupyter.org/).
+It works equally well from within irb, [pry](http://pryrepl.org/), and [Jupyter notebooks](https://jupyter.org/).
 
 *Why not progressbar, ruby-progressbar, etc.?* These libraries seemed to focus more on formatting options and you have to update the progressbar yourself. [tqdm][] came up with the ideal lazy man's interface, in that you "wrap it and forget it".
 
