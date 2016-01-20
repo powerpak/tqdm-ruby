@@ -15,7 +15,7 @@ The default output looks like this:
 
 It works equally well from within irb, [pry](http://pryrepl.org/), and [Jupyter notebooks](https://jupyter.org/).
 
-*Why not progressbar, ruby-progressbar, etc.?* These libraries seemed to focus more on formatting options and you have to update the progressbar yourself. [tqdm][] came up with the ideal lazy man's interface, in that you "wrap it and forget it".
+*Why not progressbar, ruby-progressbar, etc.?* These have a bazillion formatting options and you have to update the progressbar object yourself. [tqdm][] strives for the laziest possible interface, in that you "set it and forget it".
 
 [tqdm]: https://github.com/tqdm/tqdm
 
@@ -38,7 +38,7 @@ And then execute:
 All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives, e.g., `#each_with_index`, `#each_with_object`, etc.) produces an animated progress bar on $stderr.
 
     require 'tqdm'
-    (0...100).tqdm.each {|x| sleep 0.01 }
+    (0...1000).tqdm.each {|x| sleep 0.01 }
 
 [Sequel](http://sequel.jeremyevans.net/) `Dataset`s may also be enhanced as follows:
 
