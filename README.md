@@ -13,7 +13,7 @@ require 'tqdm'
 
 The default output looks like this:
 
-    |####------| 492/1000  49% [elapsed: 00:05 left: 00:05, 88.81 iters/sec]
+![|####------| 492/1000  49% [elapsed: 00:05 left: 00:05, 88.81 iters/sec]](http://i.imgur.com/6y0t7XS.gif)
 
 It works equally well from within irb, [pry](http://pryrepl.org/), and [Jupyter notebooks](https://jupyter.org/).
 
