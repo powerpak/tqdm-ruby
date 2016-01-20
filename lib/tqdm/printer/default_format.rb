@@ -1,9 +1,9 @@
 module Tqdm
   class Printer
     class DefaultFormat
+      PROGRESS_BAR_WIDTH = 10
       SPACE = '-'
       PROGRESS = '#'
-
 
       def initialize(total:, options:)
         @total = total
@@ -30,8 +30,8 @@ module Tqdm
         if total
           frac = n.to_f / total
 
-          bar_length = (frac * N_BARS).to_i
-          bar = PROGRESS * bar_length + SPACE * (N_BARS - bar_length)
+          bar_length = (frac * PROGRESS_BAR_WIDTH).to_i
+          bar = PROGRESS * bar_length + SPACE * (PROGRESS_BAR_WIDTH - bar_length)
 
           percentage = '%3d%%' % (frac * 100)
 

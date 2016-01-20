@@ -12,10 +12,6 @@ require 'core_ext/enumerable'
 # @author Theodore Pak
 # @see https://github.com/tqdm/tqdm
 module Tqdm
-
-  # The default width of the progress bar, in characters.
-  N_BARS = 10
-
   class << self
     # Upgrades `Sequel::Datasets` with the #with_progress method.
     # @see Enumerable#with_progress
