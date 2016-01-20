@@ -9,7 +9,7 @@ module Enumerable
   #   desc: Short string, describing the progress, added to the beginning of the line
   #   total: Expected number of iterations, if not given, self.size is used
   #   file: A file-like object to output the progress message to, by default, $stderr
-  #   leave: A boolean (default False) should the progress bar should stay on screen after it's done?
+  #   leave: A boolean (default false). Should the progress bar should stay on screen after it's done?
   #   min_interval: See below
   #   min_iters: If less than min_interval seconds or min_iters iterations have passed since
   #              the last progress meter update, it is not updated again.

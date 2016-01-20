@@ -35,10 +35,21 @@ And then execute:
 
 ## Usage
 
-All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives, e.g., `#each_with_index`, `#each_with_object`, etc.) produces an animated progress bar on $stderr.
+All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives, e.g., `#each_with_index`, `#each_with_object`, etc.) produces an animated progress bar on `$stderr`.
+
+Options can be provided for `#tqdm`:
 
     require 'tqdm'
-    (0...1000).tqdm.each {|x| sleep 0.01 }
+    (0...1000).tqdm(desc: "demo", leave: true).each {|x| sleep 0.01 }
+
+The following options are available:
+
+- `desc`: Short string, describing the progress, added to the beginning of the line
+- `total`: Expected number of iterations, if not given, `self.size` is used
+- `file`: A file-like object to output the progress message to, by default, `$stderr`
+- `leave`: A boolean (default false). Should the progress bar should stay on screen after it's done?
+- `min_interval`: Default is `0.5`. If less than `min_interval` seconds or `min_iters` iterations have passed since the last progress meter update, it is not re-printed (decreases IO thrashing).
+- `min_iters`: Default is `1`. See previous.
 
 [Sequel](http://sequel.jeremyevans.net/) `Dataset`s may also be enhanced as follows:
 
