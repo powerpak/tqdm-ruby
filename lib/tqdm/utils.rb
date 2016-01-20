@@ -2,11 +2,13 @@ require "tqdm"
 
 module Tqdm
   
-  N_BARS = 10
-  
+  # Utility functions related to `Tqdm`.
   module Utils
   
     # Formats a number of seconds into an hh:mm:ss string.
+    #
+    # @param t [Integer] a number of seconds
+    # @return [String] an hh:mm:ss string
     def format_interval(t)
       mins, s = t.to_i.divmod(60)
       h, m = mins.divmod(60)
@@ -14,11 +16,13 @@ module Tqdm
     end
   
     # Formats a count (n) of total items processed + an elapsed time into a
-    # textual progress meter.
+    # textual progress bar + meter.
+    #
+    # @param n [Integer] number of finished iterations
+    # @param total [Integer, nil] total number of iterations, or nil
+    # @param elapsed [Integer] number of seconds passed since start
+    # @return [String] a textual progress bar + meter
     def format_meter(n, total, elapsed)
-      # n - number of finished iterations
-      # total - total number of iterations, or nil
-      # elapsed - number of seconds passed since start
       total = (n > total ? nil : total) if total
   
       elapsed_str = format_interval(elapsed)

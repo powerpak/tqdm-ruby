@@ -1,3 +1,4 @@
 module Tqdm
-  VERSION = "0.0.1"
+  # The version of this module and gem by the same name.
+  VERSION = "0.1.0"
 end
