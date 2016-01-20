@@ -18,9 +18,10 @@ The default output looks like this:
 
 It works equally well from within irb, [pry](http://pryrepl.org/), and [Jupyter notebooks](https://jupyter.org/).
 
-*Why not progressbar, ruby-progressbar, etc.?* These have a bazillion formatting options and you typically have to update the progressbar object throughout other code. tqdm pleasantly encourages the laziest imaginable usage, in that you "set it and forget it".
+*Why not progressbar, ruby-progressbar, powerbar, or any of the [other gems][]?* These typically have a bucketload of formatting options and you have to manually send updates to the progressbar object to use them. tqdm pleasantly encourages the laziest usage scenario, in that you "set it and forget it".
 
 [tqdm]: https://github.com/tqdm/tqdm
+[other gems]: https://www.ruby-toolbox.com/categories/CLI_Progress_Bars
 
 ## Install
 
