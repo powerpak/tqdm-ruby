@@ -1,5 +1,3 @@
-require 'tqdm'
-
 module Tqdm
 
   # Utility functions related to `Tqdm`.
@@ -44,7 +42,5 @@ module Tqdm
         '%d [elapsed: %s, %s iters/sec]' % [n, elapsed_str, rate]
       end
     end
-
   end
-
 end
