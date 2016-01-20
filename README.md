@@ -8,7 +8,7 @@ Call `#tqdm` on any `Enumerable`, which enhances the object so that iterating ov
 
 ```ruby
 require 'tqdm'
-(0...1000).tqdm.each {|x| sleep 0.01 }
+(0...1000).tqdm.each { |x| sleep 0.01 }
 ```
 
 The default output looks like this:
@@ -43,7 +43,7 @@ Options can be provided for `#tqdm`:
 
 ```ruby
 require 'tqdm'
-(0...1000).tqdm(desc: "demo", leave: true).each {|x| sleep 0.01 }
+(0...1000).tqdm(desc: "demo", leave: true).each { |x| sleep 0.01 }
 ```
 
 The following options are available:
@@ -68,10 +68,10 @@ DB.create_table :items do
 end
 
 # Show progress during big inserts (this isn't new)
-(0..100000).tqdm.each {|x| DB[:items].insert(price: rand * 100) }
+(0..100000).tqdm.each { DB[:items].insert(price: rand * 100) }
 
 # Show progress during long SELECT queries
-DB[:items].where{ price > 10 }.tqdm.each {|row| "do some processing here" }
+DB[:items].where{ price > 10 }.tqdm.each { |row| "do some processing here" }
 ```
 
 ## Contributing
