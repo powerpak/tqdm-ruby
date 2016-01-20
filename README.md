@@ -4,7 +4,7 @@ tqdm-ruby is a small utility to show a progress indicator while iterating throug
 
 It is a port of the excellent [tdqm library][tqdm] for python.
 
-Call #tqdm on any `Enumerable`, which enhances the object so that iterating over it will produce an animated progress bar on `$stderr`.
+Call `#tqdm` on any `Enumerable`, which enhances the object so that iterating over it will produce an animated progress bar on `$stderr`.
 
     require 'tqdm'
     (0...1000).tqdm.each {|x| sleep 0.01 }
