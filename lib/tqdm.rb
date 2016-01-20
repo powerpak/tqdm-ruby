@@ -1,30 +1,30 @@
-require "tqdm/version"
-require "tqdm/utils"
-require "core_ext/enumerable"
+require 'tqdm/version'
+require 'tqdm/utils'
+require 'core_ext/enumerable'
 
 # Add a progress bar to your loops in a second.
-# A port of Python's [tqdm library](https://github.com/tqdm/tqdm), although we're currently 
+# A port of Python's [tqdm library](https://github.com/tqdm/tqdm), although we're currently
 # closer to the feature set of [@noamraph's original release](https://github.com/noamraph/tqdm).
 #
-# Specifically, `Tqdm` enhances `Enumerable` by printing a progress indicator whenever 
+# Specifically, `Tqdm` enhances `Enumerable` by printing a progress indicator whenever
 # iterating with `#each` or its close relatives.
 #
 # @author Theodore Pak
 # @see https://github.com/tqdm/tqdm
 module Tqdm
-  
+
   # The default width of the progress bar, in characters.
   N_BARS = 10
-  
+
   class << self
     # Upgrades `Sequel::Datasets` with the #tqdm method.
     # @see Enumerable#tqdm
     def enhance_sequel!
-      require "tqdm/sequel"
+      require 'tqdm/sequel'
     end
   end
-  
-  # Prints a status line, handling the deletion of previously printed lines with carriage 
+
+  # Prints a status line, handling the deletion of previously printed lines with carriage
   # returns as necessary. Instantiated by a `TqdmDecorator`.
   #
   # @private
@@ -36,7 +36,7 @@ module Tqdm
       @file = file
       @last_printed_len = 0
     end
-  
+
     # Prints a line of text to @file, after deleting the previously printed line
     #
     # @param line [String] a line of text to be printed
@@ -47,8 +47,8 @@ module Tqdm
       @last_printed_len = line.size
     end
   end
-  
-  
+
+
   # Decorates the #each method of an `Enumerable` by wrapping it so that each
   # iteration produces a pretty progress bar printed to the console or a file handle.
   #
@@ -59,7 +59,7 @@ module Tqdm
   #   arr_tqdm = TqdmDecorator.new(arr).enhance
   #   arr_tqdm.each { |x| sleep 0.01 }
   class TqdmDecorator
-    
+
     include Utils
 
     # Initialize a new TqdmDecorator. Typically you wouldn't use this object, but
@@ -92,16 +92,16 @@ module Tqdm
       @min_interval = opts[:min_interval] || 0.5
       @leave = opts[:leave] || false
     end
-    
+
     # Starts the textual progress bar.
     def start!
       @start_t = @last_print_t = Time.now
       @last_print_n = 0
       @n = 0
-      
+
       @sp.print_status(@prefix + format_meter(0, @total, 0))
     end
-    
+
     # Called everytime the textual progress bar might need to be updated (i.e. on
     # every iteration). We still check whether the update is appropriate to print to
     # the progress bar before doing so, according to the `:min_iters` and `:min_interval`
@@ -110,7 +110,7 @@ module Tqdm
     # @see #initialize
     def increment!
       @n += 1
-  
+
       if @n - @last_print_n >= @min_iters
         # We check the counter first, to reduce the overhead of Time.now
         cur_t = Time.now
@@ -121,7 +121,7 @@ module Tqdm
         end
       end
     end
-    
+
     # Prints the final state of the textual progress bar. Based on the `:leave` option, this
     # may include deleting it entirely.
     def finish!
@@ -135,7 +135,7 @@ module Tqdm
         @file.write("\n")
       end
     end
-    
+
     # Enhances the wrapped `Enumerable`.
     #
     # @note The `Enumerable` is cloned (shallow copied) before it is enhanced; it is not modified directly.
@@ -144,7 +144,7 @@ module Tqdm
     #   progress bar.
     def enhance
       tqdm = self
-      
+
       enhanced = @enumerable.clone
       enhanced.define_singleton_method(:each) do |*args, &block|
         tqdm.start!
@@ -154,10 +154,10 @@ module Tqdm
         end
         tqdm.finish!
       end
-      
+
       enhanced
     end
 
   end
-  
+
 end
