@@ -55,7 +55,7 @@ The following options are available:
 - `min_interval`: Default is `0.5`. If less than `min_interval` seconds or `min_iters` iterations have passed since the last progress meter update, it is not re-printed (decreases IO thrashing).
 - `min_iters`: Default is `1`. See previous.
 
-[Sequel](http://sequel.jeremyevans.net/) `Dataset`s may also be enhanced as follows:
+[Sequel](http://sequel.jeremyevans.net/) is an amazing database library for Ruby. tqdm can enhance its [`Dataset`](http://sequel.jeremyevans.net/rdoc/classes/Sequel/Dataset.html) objects to show progress while iterating (same options as above):
 
 ```ruby
 require 'tqdm/sequel'   # Automatically requires tqdm and sequel
