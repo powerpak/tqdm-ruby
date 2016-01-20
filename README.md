@@ -16,7 +16,9 @@ The default output looks like this:
 
 ![|####------| 492/1000  49% [elapsed: 00:05 left: 00:05, 88.81 iters/sec]](http://i.imgur.com/6y0t7XS.gif)
 
-It works equally well from within irb, [pry](http://pryrepl.org/), and [Jupyter notebooks](https://jupyter.org/).
+It works equally well from within irb, [pry](http://pryrepl.org/), and [iRuby notebooks](https://github.com/SciRuby/iruby) as seen here:
+
+![iRuby notebook screencap](http://i.imgur.com/DilrHuX.gif)
 
 *Why not progressbar, ruby-progressbar, powerbar, or any of the [other gems][]?* These typically have a bucketload of formatting options and you have to manually send updates to the progressbar object to use them. tqdm pleasantly encourages the laziest usage scenario, in that you "set it and forget it".
 
