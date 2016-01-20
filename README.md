@@ -77,6 +77,14 @@ end
 DB[:items].where{ price > 10 }.tqdm.each { |row| "do some processing here" }
 ```
 
+## TODO
+
+1. Performance improvements
+2. Test/benchmark suite
+3. Add smoothing for speed estimates
+4. Support unicode output (smooth blocks)
+5. By default, resize to the apparent width of the output terminal
+
 ## Contributing
 
 1. Fork it
