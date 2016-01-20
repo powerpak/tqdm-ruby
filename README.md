@@ -21,17 +21,17 @@ It works equally well from within irb, [pry](http://pryrepl.org/) and [Jupyter n
 
 ## Install
 
-Add this line to your application's `Gemfile`:
+Install it globally from [Rubygems](https://rubygems.org/gems/tqdm):
+
+    $ gem install tqdm    # (might need sudo on OS X)
+
+*or* add this line to your application's Gemfile:
 
     gem 'tqdm'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install tqdm
 
 ## Usage
 
