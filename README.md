@@ -36,6 +36,23 @@ All `Enumerable` objects gain access to the `#tqdm` method, which returns an enh
     require 'tqdm'
     (0...100).tqdm.each {|x| sleep 0.01 }
 
+[Sequel](http://sequel.jeremyevans.net/) `Dataset`s may also be enhanced as follows:
+
+    require 'tqdm/sequel'   # Automatically requires tqdm and sequel
+    
+    # In-memory database for demonstration purposes
+    DB = Sequel.sqlite
+    DB.create_table :items do
+      primary_key :id
+      Float :price
+    end
+    
+    # Show progress during big inserts (this isn't new)
+    (0..100000).tqdm.each {|x| DB[:items].insert(price: rand * 100) }
+    
+    # Show progress during long SELECT queries
+    DB[:items].where{ price > 10 }.tqdm.each {|row| "do some processing here" }
+
 ## Contributing
 
 1. Fork it

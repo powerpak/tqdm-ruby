@@ -5,8 +5,9 @@ require "core_ext/enumerable"
 module Tqdm
   
   class << self
-    def enhance_sequel
-      require_relative "tqdm/sequel"
+    # Upgrades Sequel::Datasets with the #tqdm method.
+    def enhance_sequel!
+      require "tqdm/sequel"
     end
   end
     
