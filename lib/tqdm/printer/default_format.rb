@@ -62,7 +62,7 @@ module Tqdm
 
       # Formats a number of seconds into an hh:mm:ss string.
       #
-      # @param t [Integer] a number of seconds
+      # @param seconds [Integer] a number of seconds
       # @return [String] an hh:mm:ss string
       def interval(seconds)
         m, s = seconds.to_i.divmod(60)
