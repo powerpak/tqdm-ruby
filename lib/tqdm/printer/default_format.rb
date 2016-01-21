@@ -39,7 +39,7 @@ module Tqdm
         elapsed_str = interval(elapsed)
         rate = elapsed && elapsed > 0 ? ('%5.2f' % (n / elapsed)) : '?'
 
-        if total
+        if total && total > 0
           frac = n.to_f / total
 
           bar_length = (frac * PROGRESS_BAR_WIDTH).to_i

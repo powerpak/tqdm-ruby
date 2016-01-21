@@ -23,10 +23,6 @@ module Tqdm
       @file = options[:file] || $stderr
       @last_printed_length = 0
     end
-
-    def start
-      line(0, 0.0)
-    end
     
     # Pads a status line so that it is long enough to overwrite the previously written line
     #
