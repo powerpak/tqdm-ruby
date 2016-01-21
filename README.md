@@ -82,7 +82,7 @@ DB[:items].where{ price > 10 }.with_progress.each { |row| "do some processing he
 ## TODO
 
 1. Performance improvements
-2. Test/benchmark suite
+2. Add benchmark suite, expand test coverage
 3. Add smoothing for speed estimates
 4. Support unicode output (smooth blocks)
 5. By default, resize to the apparent width of the output terminal
