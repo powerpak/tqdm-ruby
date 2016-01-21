@@ -5,7 +5,7 @@ tqdm-ruby allows you to add a progress indicator to your loops with minimal effo
 
 It is a port of the excellent [tqdm library][tqdm] for python. tqdm (read taqadum, تقدّم) means "progress" in Arabic.
 
-Calling `#tqdm` on any `Enumerable` returns an enhanced clone that animates a meter on `$stderr` during iteration.
+Calling `#tqdm` (or its readable but longer alias `#with_progress`) on any `Enumerable` returns an enhanced clone that animates a meter on `$stderr` during iteration.
 
 ```ruby
 require 'tqdm'
@@ -41,17 +41,17 @@ And then execute:
 
 ## Usage
 
-All `Enumerable` objects gain access to the `#tqdm` method, which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives: `#each_with_index`, `#map`, `#select`, etc.) produces an animated progress bar on `$stderr`.
+All `Enumerable` objects gain access to the `#with_progress` method (aliased as `#tqdm`), which returns an enhanced object wherein any iteration (by calling `#each` or any of its relatives: `#each_with_index`, `#map`, `#select`, etc.) produces an animated progress bar on `$stderr`.
 
 ```ruby
 require 'tqdm'
 num = 1629241972611353
-(2..Math.sqrt(num)).tqdm.reject { |x| num % x > 0 }.map { |x| [x, num/x] }
+(2..Math.sqrt(num)).with_progress.reject { |x| num % x > 0 }.map { |x| [x, num/x] }
 # ... Animates a progress bar while calculating...
 # => [[32599913, 49976881]]
 ```
 
-Options can be provided as a hash, e.g., `.tqdm(desc: "copying", leave: true)`. The following options are available:
+Options can be provided as a hash, e.g., `.with_progress(desc: "copying", leave: true)`. The following options are available:
 
 - `desc`: Short string, describing the progress, added to the beginning of the line
 - `total`: Expected number of iterations, if not given, `self.size || self.count` is used
@@ -73,10 +73,10 @@ DB.create_table :items do
 end
 
 # Show progress during big inserts (this isn't new)
-(0..100000).tqdm.each { DB[:items].insert(price: rand * 100) }
+(0..100000).with_progress.each { DB[:items].insert(price: rand * 100) }
 
 # Show progress during long SELECT queries
-DB[:items].where{ price > 10 }.tqdm.each { |row| "do some processing here" }
+DB[:items].where{ price > 10 }.with_progress.each { |row| "do some processing here" }
 ```
 
 ## TODO
