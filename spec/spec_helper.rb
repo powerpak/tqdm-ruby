@@ -7,3 +7,14 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 end
+
+def with_stderr(&block)
+  old_stderr = $stderr
+  $stderr    = StringIO.new
+
+  block.call
+
+  return $stderr.string
+ensure
+  $stderr = old_stderr
+end
