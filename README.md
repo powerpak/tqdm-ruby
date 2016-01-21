@@ -1,5 +1,5 @@
 # tqdm-ruby
-[![Gem Version](https://badge.fury.io/rb/tqdm.svg)](https://badge.fury.io/rb/tqdm)
+[![Build Status](https://travis-ci.org/powerpak/tqdm-ruby.svg?branch=master)](https://travis-ci.org/powerpak/tqdm-ruby)[![Gem Version](https://badge.fury.io/rb/tqdm.svg)](https://badge.fury.io/rb/tqdm)
 
 tqdm-ruby allows you to add a progress indicator to your loops with minimal effort.
 
