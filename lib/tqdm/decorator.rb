@@ -12,6 +12,8 @@ module Tqdm
   #   arr_tqdm = Decorator.new(arr).enhance
   #   arr_tqdm.each { |x| sleep 0.01 }
   class Decorator
+    
+    extend Forwardable
 
     attr_reader :printer, :enumerable, :iteration, :start_time
 
@@ -46,9 +48,8 @@ module Tqdm
 
     # Starts the textual progress bar.
     def start!
-      @iteration = 0
-      @start_time = Time.now
-      printer.start
+      @iteration = @last_printed_iteration = 0
+      @start_time = @last_print_time = current_time!
     end
 
     # Called everytime the textual progress bar might need to be updated (i.e. on
@@ -63,8 +64,9 @@ module Tqdm
       return unless (iteration - last_printed_iteration) >= @min_iterations
       # We check the counter first, to reduce the overhead of Time.now
       return unless (current_time! - last_print_time) >= @min_interval
+      return if iteration == total && !@leave
 
-      printer.status(iteration, elapsed_time!)
+      printer.status(iteration, elapsed_time!) 
       @last_printed_iteration = iteration
       @last_print_time = current_time
     end
@@ -134,5 +136,7 @@ module Tqdm
     def reprint?
       last_printed_iteration < iteration
     end
+    
+    def_delegator :printer, :total
   end
 end
