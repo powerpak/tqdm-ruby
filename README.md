@@ -5,7 +5,7 @@ tqdm-ruby allows you to add a progress indicator to your loops with minimal effo
 
 It is a port of the excellent [tqdm library][tqdm] for python. tqdm (read taqadum, تقدّم) means "progress" in Arabic.
 
-Calling `#tqdm` (or its readable but longer alias `#with_progress`) on any `Enumerable` returns an enhanced clone that animates a meter on `$stderr` during iteration.
+Calling `#tqdm` (or `#with_progress`) on any `Enumerable` returns an enhanced clone that animates a meter on `$stderr` during iteration.
 
 ```ruby
 require 'tqdm'
