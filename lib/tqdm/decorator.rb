@@ -96,8 +96,8 @@ module Tqdm
       tqdm = self
       enhanced.define_singleton_method(:each) do |*args, &block|
         tqdm.start!
-        result = super(*args) do |item|
-          block.call item if block
+        result = super(*args) do |*items|
+          block.call *items if block
           tqdm.increment!
         end
         tqdm.finish!
