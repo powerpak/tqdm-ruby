@@ -106,7 +106,7 @@ module Tqdm
     end
 
     def enhanced
-      @enhanced ||= enumerable.clone
+      @enhanced ||= enumerable.dup
     end
 
     def total!
