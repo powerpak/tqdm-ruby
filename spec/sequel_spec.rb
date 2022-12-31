@@ -40,12 +40,14 @@ describe 'When enumerating over a Sequel dataset' do
       end
 
       it 'returns a re-frozen object' do
-        enhanced = timecop_loop(database[:items])
+        enhanced = nil
+        with_stderr { enhanced = timecop_loop(database[:items]) }
         expect(enhanced.frozen?).to be_truthy
       end
 
       it 'returns an object inheriting from Sequel::Dataset' do
-        enhanced = timecop_loop(database[:items])
+        enhanced = nil
+        with_stderr { enhanced = timecop_loop(database[:items]) }
         expect(enhanced).to be_kind_of(Sequel::Dataset)
       end
     end
