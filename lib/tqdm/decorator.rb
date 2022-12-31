@@ -44,6 +44,7 @@ module Tqdm
       @min_iterations = options[:min_iters] || 1
       @min_interval = options[:min_interval] || 0.5
       @leave = options[:leave] || false
+      @force_refreeze = false
     end
 
     # Starts the textual progress bar.
@@ -87,6 +88,7 @@ module Tqdm
     #   progress bar.
     def enhance
       decorate_enumerable_each
+      enhanced.freeze if @force_refreeze
       enhanced
     end
 
@@ -106,7 +108,20 @@ module Tqdm
     end
 
     def enhanced
-      @enhanced ||= enumerable.dup
+      @enhanced ||= enumerable_unfrozen
+    end
+
+    # Uses progressively more invasive techniques to return an unfrozen copy of @enumerable
+    # Significantly, for some classes like Sequel::Dataset, both #clone and #dup re-freeze
+    #    the object, so we have to drop back to Object#clone
+    def enumerable_unfrozen
+      unfrozen = enumerable.clone(freeze: false)
+      return unfrozen unless unfrozen.frozen?
+      unfrozen = enumerable.dup
+      return unfrozen unless unfrozen.frozen?
+      @force_refreeze = true
+      unfrozen = Object.instance_method(:clone).bind(enumerable).call(freeze: false)
+      unfrozen
     end
 
     def total!

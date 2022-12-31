@@ -1,4 +1,4 @@
-Copyright (c) 2016 Theodore Pak
+Copyright (c) 2022 Theodore Pak
 
 MIT License
 
