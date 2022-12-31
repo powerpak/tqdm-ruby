@@ -1,6 +1,11 @@
 require 'tqdm/printer'
 
+CLONE_OPTS_SUPPORTED = RUBY_VERSION.split('.')[0..1].join('.').to_f >= 2.4
+
 module Tqdm
+  
+  class DecoratorError < StandardError
+  end
 
   # Decorates the #each method of an `Enumerable` by wrapping it so that each
   # iteration produces a pretty progress bar printed to the console or a file handle.
@@ -115,12 +120,17 @@ module Tqdm
     # Significantly, for some classes like Sequel::Dataset, both #clone and #dup re-freeze
     #    the object, so we have to drop back to Object#clone
     def enumerable_unfrozen
-      unfrozen = enumerable.clone(freeze: false)
+      unfrozen = CLONE_OPTS_SUPPORTED ? enumerable.clone(freeze: false) : enumerable.clone
       return unfrozen unless unfrozen.frozen?
       unfrozen = enumerable.dup
       return unfrozen unless unfrozen.frozen?
       @force_refreeze = true
-      unfrozen = Object.instance_method(:clone).bind(enumerable).call(freeze: false)
+      if CLONE_OPTS_SUPPORTED
+        unfrozen = Object.instance_method(:clone).bind(enumerable).call(freeze: false)
+      else
+        unfrozen = Object.instance_method(:clone).bind(enumerable).call
+      end
+      raise DecoratorError.new("could not create an unfrozen clone") if unfrozen.frozen?
       unfrozen
     end
 
