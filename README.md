@@ -29,7 +29,7 @@ It works equally well from within irb, [pry](http://pryrepl.org/), and [iRuby no
 
 Install it globally from [Rubygems](https://rubygems.org/gems/tqdm):
 
-    $ gem install tqdm    # (might need sudo on OS X)
+    $ gem install tqdm    # (might need sudo for a system ruby)
 
 *or* add this line to your application's Gemfile:
 
