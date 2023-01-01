@@ -1,6 +1,6 @@
 require 'tqdm/printer'
 
-CLONE_OPTS_SUPPORTED = RUBY_VERSION.split('.')[0..1].join('.').to_f >= 2.4
+CLONE_UNFROZEN_SUPPORTED = RUBY_VERSION.split('.')[0..1].join('.').to_f >= 2.4
 
 module Tqdm
   
@@ -117,21 +117,23 @@ module Tqdm
     end
 
     # Uses progressively more invasive techniques to return an unfrozen copy of @enumerable
-    # Significantly, for some classes like Sequel::Dataset, both #clone and #dup re-freeze
-    #    the object, so we have to drop back to Object#clone
     def enumerable_unfrozen
-      unfrozen = CLONE_OPTS_SUPPORTED ? enumerable.clone(freeze: false) : enumerable.clone
-      return unfrozen unless unfrozen.frozen?
-      unfrozen = enumerable.dup
-      return unfrozen unless unfrozen.frozen?
+      to_unfreeze = CLONE_UNFROZEN_SUPPORTED ? enumerable.clone(freeze: false) : enumerable.clone
+      return to_unfreeze unless to_unfreeze.frozen?
+      to_unfreeze = to_unfreeze.dup
+      return to_unfreeze unless to_unfreeze.frozen?
+      
+      # Significantly, for some classes like Sequel::Dataset, both #clone and #dup re-freeze
+      # the object before returning it, so we have to drop back to Object#clone to avoid this
       @force_refreeze = true
-      if CLONE_OPTS_SUPPORTED
-        unfrozen = Object.instance_method(:clone).bind(enumerable).call(freeze: false)
-      else
-        unfrozen = Object.instance_method(:clone).bind(enumerable).call
+      if CLONE_UNFROZEN_SUPPORTED
+        to_unfreeze = Object.instance_method(:clone).bind(enumerable).call(freeze: false)
       end
-      raise DecoratorError.new("could not create an unfrozen clone") if unfrozen.frozen?
-      unfrozen
+      if Object.instance_method(:frozen?).bind(to_unfreeze).call
+        raise DecoratorError.new("could not create an unfrozen clone")
+      end
+      
+      to_unfreeze
     end
 
     def total!
